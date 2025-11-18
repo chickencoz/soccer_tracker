@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Add Event</h3>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">Position</label>
+    <select name="position" id="position" class="form-select" required onchange="toggleTypes()">
+      <option value="field">Field (attacker/midfielder/defender)</option>
+      <option value="keeper">Keeper</option>
+    </select>
+  </div>
+
+  <div class="mb-3" id="outfield_types_div">
+    <label class="form-label">Event type (field)</label>
+    <select name="event_type" class="form-select">
+      {% for t in outfield_types %}
+        <option value="{{ t }}">{{ t }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3 d-none" id="keeper_types_div">
+    <label class="form-label">Event type (keeper)</label>
+    <select name="event_type" class="form-select">
+      {% for t in keeper_types %}
+        <option value="{{ t }}">{{ t }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">On target?</label>
+    <select name="on_target" class="form-select">
+      <option value="no">No</option>
+      <option value="yes">Yes</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Scored?</label>
+    <select name="scored" class="form-select">
+      <option value="no">No</option>
+      <option value="yes">Yes</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Notes (optional)</label>
+    <input class="form-control" name="notes" placeholder="E.g., 'Left foot, 20m'">
+  </div>
+
+  <button class="btn btn-primary" type="submit">Add</button>
+</form>
+
+<script>
+function toggleTypes() {
+  const pos = document.getElementById('position').value;
+  document.getElementById('outfield_types_div').classList.toggle('d-none', pos === 'keeper');
+  document.getElementById('keeper_types_div').classList.toggle('d-none', pos === 'field');
+}
+window.addEventListener('load', toggleTypes);
+</script>
+{% endblock %}
