@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Statistics</h3>
+
+<div class="row">
+  <div class="col-md-6">
+    <h5>Outfield</h5>
+    <ul class="list-group">
+      <li class="list-group-item">Total shots: {{ total_shots }}</li>
+      <li class="list-group-item">Shots on target: {{ total_on_target }}</li>
+      <li class="list-group-item">Goals: {{ total_goals }}</li>
+      <li class="list-group-item">Assists: {{ total_assists }}</li>
+      <li class="list-group-item">Passes: {{ total_passes }}</li>
+      <li class="list-group-item">Goal percentage: {{ goal_percentage if goal_percentage is not none else 'N/A' }}{% if goal_percentage %}%{% endif %}</li>
+      <li class="list-group-item">On-target %: {{ on_target_percentage if on_target_percentage is not none else 'N/A' }}{% if on_target_percentage %}%{% endif %}</li>
+    </ul>
+  </div>
+
+  <div class="col-md-6">
+    <h5>Keeper</h5>
+    <ul class="list-group">
+      <li class="list-group-item">Shots on goal against: {{ shots_on_against }}</li>
+      <li class="list-group-item">Saves: {{ saves }}</li>
+      <li class="list-group-item">Goals allowed (conceded): {{ goals_allowed }}</li>
+      <li class="list-group-item">Save %: {{ save_percentage if save_percentage is not none else 'N/A' }}{% if save_percentage %}%{% endif %}</li>
+    </ul>
+  </div>
+</div>
+
+<hr>
+
+<h5 class="mt-3">Training goal progress (current measured value)</h5>
+<ul class="list-group mb-3">
+  {% for gp in goals_progress %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      {{ gp.metric }} (target {{ gp.target }})
+      <span class="badge bg-primary rounded-pill">{{ gp.progress if gp.progress is not none else 'N/A' }}</span>
+    </li>
+  {% else %}
+    <li class="list-group-item">No training goals set.</li>
+  {% endfor %}
+</ul>
+
+<h5>Goals / Shots over time</h5>
+<canvas id="trendChart" style="max-height:300px"></canvas>
+
+<script>
+const chartData = {{ chart_data|tojson }};
+const ctx = document.getElementById('trendChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: chartData.labels,
+    datasets: [
+      { label: 'Goals', data: chartData.goals, tension:0.2 },
+      { label: 'Shots', data: chartData.shots, tension:0.2 }
+    ]
+  },
+  options: {
+    responsive: true,
+    interaction: {mode:'index', intersect:false},
+    stacked: false
+  }
+});
+</script>
+
+{% endblock %}
