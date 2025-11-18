@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <h3>Quick actions</h3>
+    <p><a class="btn btn-success" href="{{ url_for('add_event') }}">Add Event</a>
+       <a class="btn btn-info" href="{{ url_for('stats') }}">View Stats</a>
+       <a class="btn btn-secondary" href="{{ url_for('goals') }}">Training Goals</a></p>
+    <h5>Recent events</h5>
+    <ul class="list-group">
+      {% for e in latest %}
+        <li class="list-group-item">
+          <strong>{{ e.position }}</strong> - {{ e.event_type }} 
+          {% if e.on_target %}(on target){% endif %}
+          {% if e.scored %}(scored){% endif %}
+          <br><small class="text-muted">{{ e.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+        </li>
+      {% else %}
+        <li class="list-group-item">No events yet — add one.</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-md-6">
+    <h3>Notes</h3>
+    <p>Track goals, shots, assists, passes, and keeper saves. Use the Training Goals page to set targets and measure progress.</p>
+    <h5>Tip</h5>
+    <p>Record every shot and mark 'on target' and 'scored' for more accurate goal percentage numbers.</p>
+  </div>
+</div>
+{% endblock %}
