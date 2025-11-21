@@ -41,7 +41,7 @@ class TrainingGoal(db.Model):
 # @app.before_first_request
 with app.app_context():
     def create_tables():
-    db.create_all()
+        db.create_all()
 
 # Home / quick add links
 @app.route('/')
