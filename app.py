@@ -38,7 +38,8 @@ class TrainingGoal(db.Model):
         return f"<Goal {self.metric} -> {self.target}>"
 
 # Initialize DB helper
-@app.before_first_request
+# @app.before_first_request
+with app.app_context():
 def create_tables():
     db.create_all()
 
