@@ -40,7 +40,7 @@ class TrainingGoal(db.Model):
 # Initialize DB helper
 # @app.before_first_request
 with app.app_context():
-def create_tables():
+    def create_tables():
     db.create_all()
 
 # Home / quick add links
